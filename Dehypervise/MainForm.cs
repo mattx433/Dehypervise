@@ -19,7 +19,7 @@ namespace Dehypervise
         {
             if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
             {
-                MessageBox.Show("Administrator privileges are required", "Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Administrator privileges are required", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
                 return;
             }
