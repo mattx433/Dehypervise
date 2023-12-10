@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Windows.Forms;
 using Microsoft.Dism;
 using System.Management;
+using System.Runtime.InteropServices;
 
 namespace Dehypervise
 {
@@ -79,7 +80,15 @@ namespace Dehypervise
             ManagementBaseObject inParams = bcd.GetMethodParameters("GetElement");
             // https://learn.microsoft.com/en-us/previous-versions/windows/desktop/bcd/bcdosloaderelementtypes
             inParams["Type"] = (uint) 0x250000f0;
-            ManagementBaseObject outParams = bcd.InvokeMethod("GetElement", inParams, null);
+            ManagementBaseObject outParams;
+            try
+            {
+                outParams = bcd.InvokeMethod("GetElement", inParams, null);
+            } catch (COMException)
+            {
+                hypLaunchStatLabel.Text = "Unset";
+                return;
+            }
             // https://learn.microsoft.com/en-us/dotnet/api/system.management.managementobject.invokemethod
             bool ok = (bool) outParams["ReturnValue"];
             // https://learn.microsoft.com/en-us/previous-versions/windows/desktop/bcd/getelement-bcdobject
